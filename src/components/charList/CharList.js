@@ -1,35 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 import './charList.scss';
 
 const CharList = (props) => {
 
 	const [charList, setCharList] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(false);
 	const [newItemLoading, setNewItemLoading] = useState(false);
 	const [offset, setOffset] = useState(215);
 	const [charEnded, setCharEnded] = useState(false);
 
-	const marvelService = new MarvelService();
+	const { loading, error, getAllCharacters } = useMarvelService();
 
 	useEffect(() => onRequest(), []);
 
-	const onRequest = (offset) => {
-		onCharListLoading();
-		marvelService
-			.getAllCharacters(offset)
-			.then(onCharListLoaded)
-			.catch(onError);
-	}
-
-	const onCharListLoading = () => {
+	const onRequest = (offset, initial) => {
 		setNewItemLoading(true);
+		getAllCharacters(offset)
+			.then(onCharListLoaded);
 	}
 
 	const onCharListLoaded = (newCharList) => {
@@ -39,15 +32,9 @@ const CharList = (props) => {
 		}
 
 		setCharList(charList => [...charList, ...newCharList]);
-		setLoading(false);
 		setNewItemLoading(false);
 		setOffset(offset => offset + 9);
 		setCharEnded(ended);
-	}
-
-	const onError = () => {
-		setError(true);
-		setLoading(false);
 	}
 
 	const itemRefs = useRef([]);
@@ -95,15 +82,14 @@ const CharList = (props) => {
 
 	const items = renderedItems(charList);
 
-	const errorMessage = error ? <ErrorMessage /> : null,
-		spinner = loading ? <Spinner /> : null,
-		content = !(error || loading) ? items : null;
+	const errorMessage = error ? <ErrorMessage /> : null;
+	const spinner = loading ? <Spinner /> : null;
 
 	return (
 		<div className="char__list">
 			{spinner}
 			{errorMessage}
-			{content}
+			{items}
 			<button
 				className="button button__main button__long"
 				disabled={newItemLoading}
