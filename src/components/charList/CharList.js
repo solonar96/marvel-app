@@ -19,7 +19,7 @@ const CharList = (props) => {
 
 	useEffect(() => onRequest(), []);
 
-	const onRequest = (offset, initial) => {
+	const onRequest = (offset) => {
 		setNewItemLoading(true);
 		getAllCharacters(offset)
 			.then(onCharListLoaded);
