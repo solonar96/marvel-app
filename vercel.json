@@ -30,11 +30,5 @@
 			"src": "/(.*)",
 			"dest": "/client/index.html"
 		}
-	],
-	"rewrites": [
-		{
-			"source": "/(.*)",
-			"destination": "/"
-		}
 	]
 }
