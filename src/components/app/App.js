@@ -1,4 +1,4 @@
-import { lazy, Suspence } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import AppHeader from '../appHeader/AppHeader';
@@ -15,7 +15,7 @@ const App = () => {
 			<div className="app">
 				<AppHeader />
 				<main>
-					<Suspence fallback={<Spinner />}>
+					<Suspense fallback={<Spinner />}>
 						<Routes>
 							<Route path='/' element={<MainPage />} />
 							<Route path='/comics'>
@@ -24,7 +24,7 @@ const App = () => {
 							</Route>
 							<Route path='*' element={<Page404 />} />
 						</Routes>
-					</Suspence>
+					</Suspense>
 				</main>
 			</div>
 		</Router>
