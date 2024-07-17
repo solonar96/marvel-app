@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -37,6 +38,8 @@ const CharList = (props) => {
 		setCharEnded(ended);
 	}
 
+	const dur = 350;
+
 	const itemRefs = useRef([]);
 
 	const focusOnItem = (id) => {
@@ -48,34 +51,36 @@ const CharList = (props) => {
 	function renderedItems(arr) {
 		const items = arr.map((item, i) => {
 			return (
-				<li
-					ref={el => itemRefs.current[i] = el}
-					tabIndex={0}
-					className="char__item"
-					key={item.id}
-					onClick={() => {
-						props.onCharSelected(item.id);
-						focusOnItem(i);
-					}}
-					onKeyDown={(e) => {
-						if (e.key === ' ') e.preventDefault();
-						if (e.key === ' ' || e.key === 'Enter') {
+				<CSSTransition key={item.id} timeout={dur} classNames='char__item'>
+					<li
+						ref={el => itemRefs.current[i] = el}
+						tabIndex={0}
+						className="char__item"
+						onClick={() => {
 							props.onCharSelected(item.id);
 							focusOnItem(i);
-						}
-					}}>
-					<img
-						src={item.thumbnail}
-						alt={item.name + "character"}
-						style={{ objectFit: item.thumbnail.includes('image_not_available') ? 'unset' : 'cover' }} />
-					<div className="char__name">{item.name}</div>
-				</li>
+						}}
+						onKeyDown={(e) => {
+							if (e.key === ' ' || e.key === 'Enter') {
+								props.onCharSelected(item.id);
+								focusOnItem(i);
+							}
+						}}>
+						<img
+							src={item.thumbnail}
+							alt={item.name + "character"}
+							style={{ objectFit: item.thumbnail.includes('image_not_available') ? 'unset' : 'cover' }} />
+						<div className="char__name">{item.name}</div>
+					</li>
+				</CSSTransition>
 			)
 		})
 
 		return (
 			<ul className="char__grid">
-				{items}
+				<TransitionGroup component={null}>
+					{items}
+				</TransitionGroup>
 			</ul>
 		)
 	}
