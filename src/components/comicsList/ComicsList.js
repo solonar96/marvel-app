@@ -17,10 +17,10 @@ const ComicsList = () => {
 
 	const { loading, error, getAllComics } = useMarvelService();
 
-	useEffect(() => onRequest(), []);
+	useEffect(() => onRequest(offset, true), []);
 
-	const onRequest = (offset) => {
-		setNewItemLoading(true);
+	const onRequest = (offset, initial) => {
+		initial ? setNewItemLoading(false) : setNewItemLoading(true);
 		getAllComics(offset)
 			.then(onComicsListLoaded);
 	}

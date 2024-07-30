@@ -31,9 +31,9 @@ const SinglePage = ({ Component, dataType }) => {
 
 	const onDataLoaded = (data) => setData(data);
 
-	const errorMessage = error && <ErrorMessage />;
-	const spinner = loading && <Spinner />;
-	const content = !(error || loading || !data) && <Component data={data} />;
+	const errorMessage = error ? <ErrorMessage /> : null;
+	const spinner = loading ? <Spinner /> : null;
+	const content = !(error || loading || !data) ? <Component data={data} /> : null;
 
 	return (
 		<>
