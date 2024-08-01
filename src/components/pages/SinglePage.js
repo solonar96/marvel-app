@@ -1,4 +1,3 @@
-/* eslint-disable default-case */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -25,6 +24,8 @@ const SinglePage = ({ Component, dataType }) => {
 			case 'character':
 				getCharacter(id).then(onDataLoaded).then(() => setProcess('confirmed'));
 				break;
+			default:
+				throw new Error('Unexpected dataType');
 		}
 	}
 

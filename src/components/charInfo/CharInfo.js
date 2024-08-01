@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
